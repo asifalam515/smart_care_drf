@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from rest_framework.authtoken.models import  Token
 # for sending email
 from django.core.mail import EmailMultiAlternatives
@@ -88,5 +88,11 @@ class UserLoginApiView(APIView):
         return Response(serializer.errors)
         
          
+        
+class UserLogOutView(APIView):
+    def get(self,request):
+        request.user.auth_token.delete()
+        logout(request)
+        return redirect('login')
         
         
